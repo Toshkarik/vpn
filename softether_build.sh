@@ -25,15 +25,11 @@ fi
 
 if [ -d "$INSTALL_DIR" ]; then
     systemctl stop softether-vpnserver
-    rm $INSTALL_DIR/vpnserver
-    rm $INSTALL_DIR/hamcore.se2
-    rm /etc/systemd/system/softether-vpnserver.service
     cp bin/vpnserver/vpnserver $INSTALL_DIR
     cp bin/vpnserver/hamcore.se2 $INSTALL_DIR
 else
     mkdir $INSTALL_DIR -p
     cp -R bin/vpnserver/ $INSTALL_DIR
-    systemctl enable softether-vpnserver
 fi
 
 if [ -f "${PREV_CFG}" ]; then
@@ -44,4 +40,5 @@ cp systemd/softether-vpnserver.service /etc/systemd/system/
 
 systemctl daemon-reload
 systemctl unmask softether-vpnserver
+systemctl enable softether-vpnserver
 systemctl start softether-vpnserver
