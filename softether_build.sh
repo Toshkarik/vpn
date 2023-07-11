@@ -24,7 +24,10 @@ if [ -f "$INSTALL_DIR/vpnserver/vpn_server.config" ]; then
 fi
 
 if [ -d "$INSTALL_DIR" ]; then
-    systemctl stop softether-vpnserver
+    if [ $(systemctl is-active softether-vpnserver) == "active" ]; then
+        systemctl stop softether-vpnserver
+    fi
+
     cp bin/vpnserver/vpnserver $INSTALL_DIR
     cp bin/vpnserver/hamcore.se2 $INSTALL_DIR
 else
