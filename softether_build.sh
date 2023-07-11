@@ -8,7 +8,7 @@ INSTALL_DIR="/opt/softether"
 PREV_CFG=~/prev_vpn_server_$(date +%s).config
 J_NUM=1
 
-apt-get -y install build-essential libreadline-dev libssl-dev zlib1g-dev
+apt-get -y install build-essential libreadline-dev libssl-dev zlib1g-dev wget
 mkdir ~/se -p
 cd ~/se
 wget -c $SRC_URL -O $SRC_FILE_NAME
