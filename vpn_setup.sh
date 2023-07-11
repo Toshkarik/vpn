@@ -1,5 +1,6 @@
 #!/bin/bash
-
+set -e
+set -x
 EXT_ADDR=$1
 HOSTNAME=$2
 
