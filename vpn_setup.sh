@@ -1,10 +1,10 @@
 #!/bin/bash
 set -e
 set -x
-EXT_ADDR=$1
-HOSTNAME=$2
 
+HOSTNAME="vps.loc"
 IFACE=$(ls /sys/class/net/ | grep -v 'lo\|tap*\|br*')
+EXT_ADDR=$(ip -f inet addr show ${IFACE} | sed -En -e 's/.*inet ([0-9.]+).*/\1/p')
 
 echo "Starting setup..."
 

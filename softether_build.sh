@@ -1,11 +1,11 @@
 #!/bin/bash
 set -e
 set -x
-SRC_URL="https://www.softether-download.com/files/softether/v4.41-9787-rtm-2023.03.14-tree/Source_Code/softether-src-v4.41-9787-rtm.tar.gz"
+SRC_URL="https://www.softether-download.com/files/softether/v4.42-9798-rtm-2023.06.30-tree/Source_Code/softether-src-v4.42-9798-rtm.tar.gz"
 SRC_FILE_NAME="se_src"
 
 INSTALL_DIR="/opt/softether"
-#INSTALL_DIR="$HOME/se_inst"
+PREV_CFG=~/prev_vpn_server_$(date +%s).config
 J_NUM=1
 
 apt-get -y install build-essential libreadline-dev libssl-dev zlib1g-dev
@@ -18,24 +18,30 @@ cd src
 sed -i "s+/opt+${INSTALL_DIR}+g" systemd/softether-vpnserver.service
 ./configure
 make -j$J_NUM
-mkdir $INSTALL_DIR -p
-cp -R bin/vpnserver/ $INSTALL_DIR
 
+if [ -f "$INSTALL_DIR/vpnserver/vpn_server.config" ]; then
+    cp $INSTALL_DIR/vpnserver/vpn_server.config ${PREV_CFG}
+fi
 
-cp /var/lib/softether/vpn_server.config ~/prev_vpn_server.config
-cp /var/lib/softether/vpn_server.config $INSTALL_DIR/vpnserver/
+if [ -d "$INSTALL_DIR" ]; then
+    systemctl stop softether-vpnserver
+    rm $INSTALL_DIR/vpnserver
+    rm $INSTALL_DIR/hamcore.se2
+    rm /etc/systemd/system/softether-vpnserver.service
+    cp bin/vpnserver/vpnserver $INSTALL_DIR
+    cp bin/vpnserver/hamcore.se2 $INSTALL_DIR
+else
+    mkdir $INSTALL_DIR -p
+    cp -R bin/vpnserver/ $INSTALL_DIR
+    systemctl enable softether-vpnserver
+fi
 
-systemctl disable softether-vpnserver
-systemctl stop softether-vpnserver
+if [ -f "${PREV_CFG}" ]; then
+    cp ${PREV_CFG} $INSTALL_DIR/vpnserver/vpn_server.config
+fi
 
-apt-get -y remove softether-vpnserver
-apt-get -y autoremove
-
-systemctl daemon-reload
 cp systemd/softether-vpnserver.service /etc/systemd/system/
-
 
 systemctl daemon-reload
 systemctl unmask softether-vpnserver
-systemctl enable softether-vpnserver
 systemctl start softether-vpnserver
