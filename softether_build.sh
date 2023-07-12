@@ -40,8 +40,8 @@ if [ -d "$INSTALL_DIR" ]; then
         systemctl stop softether-vpnserver
     fi
 
-    cp bin/vpnserver/vpnserver $INSTALL_DIR
-    cp bin/vpnserver/hamcore.se2 $INSTALL_DIR
+    cp bin/vpnserver/vpnserver $INSTALL_DIR/vpnserver/
+    cp bin/vpnserver/hamcore.se2 $INSTALL_DIR/vpnserver/
 else
     mkdir $INSTALL_DIR -p
     cp -R bin/vpnserver/ $INSTALL_DIR
