@@ -6,7 +6,7 @@ SE_VERSION="4.42-9798-rtm"
 SE_VERSION_DATE="2023.06.30"
 SRC_URL="https://www.softether-download.com/files/softether/v${SE_VERSION}-${SE_VERSION_DATE}-tree/Source_Code/softether-src-v${SE_VERSION}.tar.gz"
 SRC_FILE_NAME="se_src"
-INSTALL_DIR="/opt/softether/"
+INSTALL_DIR="/opt/softether"
 
 J_NUM=1
 
