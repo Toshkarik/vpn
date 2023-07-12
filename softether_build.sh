@@ -5,8 +5,9 @@ set -x
 SE_VERSION="4.42-9798-rtm"
 SE_VERSION_DATE="2023.06.30"
 SRC_URL="https://www.softether-download.com/files/softether/v${SE_VERSION}-${SE_VERSION_DATE}-tree/Source_Code/softether-src-v${SE_VERSION}.tar.gz"
-SRC_FILE_NAME="se_src"
+SRC_FILE_NAME="softether-src-v${SE_VERSION}.tar.gz"
 INSTALL_DIR="/opt/softether"
+SRC_DIR="src-${SE_VERSION}-${SE_VERSION_DATE}"
 
 J_NUM=1
 
@@ -24,9 +25,9 @@ apt-get -y install build-essential libreadline-dev libssl-dev zlib1g-dev wget
 mkdir ${WORK_DIR} -p
 cd ${WORK_DIR}
 wget -c $SRC_URL -O $SRC_FILE_NAME
-mkdir src -p
-tar xf $SRC_FILE_NAME -C src --strip-components=1
-cd src
+mkdir ${SRC_DIR} -p
+tar xf $SRC_FILE_NAME -C ${SRC_DIR} --strip-components=1
+cd ${SRC_DIR}
 sed -i "s+/opt+${INSTALL_DIR}+g" systemd/softether-vpnserver.service
 ./configure
 make -j$J_NUM
