@@ -36,7 +36,7 @@ if [ -f "$INSTALL_DIR/vpnserver/vpn_server.config" ]; then
 fi
 
 if [ -d "$INSTALL_DIR" ]; then
-    if [ $(systemctl is-active softether-vpnserver) == "active" ]; then
+    if [ $(systemctl is-active softether-vpnserver) = "active" ]; then
         systemctl stop softether-vpnserver
     fi
 
