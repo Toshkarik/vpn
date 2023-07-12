@@ -16,6 +16,8 @@ if [ ! -z $1 ]; then
     WORK_DIR=$1/${WORK_DIR}
 fi
 
+WORK_DIR=realpath ${WORK_DIR}
+
 PREV_CFG=${WORK_DIR}/prev_vpn_server_$(date +%s).config
 
 apt-get -y install build-essential libreadline-dev libssl-dev zlib1g-dev wget
