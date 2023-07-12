@@ -1,16 +1,26 @@
 #!/bin/bash
 set -e
 set -x
-SRC_URL="https://www.softether-download.com/files/softether/v4.42-9798-rtm-2023.06.30-tree/Source_Code/softether-src-v4.42-9798-rtm.tar.gz"
-SRC_FILE_NAME="se_src"
 
+SE_VERSION="4.42-9798-rtm"
+SE_VERSION_DATE="2023.06.30"
+SRC_URL="https://www.softether-download.com/files/softether/v${SE_VERSION}-${SE_VERSION_DATE}-tree/Source_Code/softether-src-v${SE_VERSION}.tar.gz"
+SRC_FILE_NAME="se_src"
 INSTALL_DIR="/opt/softether"
-PREV_CFG=~/prev_vpn_server_$(date +%s).config
+
 J_NUM=1
 
+WORK_DIR=softether_build
+
+if [ ! -z $1 ]; then
+    WORK_DIR=$1/${WORK_DIR}
+fi
+
+PREV_CFG=${WORK_DIR}/prev_vpn_server_$(date +%s).config
+
 apt-get -y install build-essential libreadline-dev libssl-dev zlib1g-dev wget
-mkdir ~/se -p
-cd ~/se
+mkdir ${WORK_DIR} -p
+cd ${WORK_DIR}
 wget -c $SRC_URL -O $SRC_FILE_NAME
 mkdir src -p
 tar xf $SRC_FILE_NAME -C src --strip-components=1
